@@ -20,11 +20,53 @@
 #ifndef ESP_Ping_H
 #define ESP_Ping_H
 
+#include <Arduino.h>
 #ifdef ESP32
-#include <ESP32Ping.h>
-#endif
-#ifdef ESP8266
-#include <ESP8266Ping.h>
+#include <WiFi.h>
+#include <ping.h>
+extern "C" {
+  void esp_schedule(void);
+  void esp_yield(void);
+}
 #endif
 
+#ifdef ESP8266
+#include <ESP8266WiFi.h>
+extern "C" {
+  #include <ping.h> 
+}
 #endif
+
+#ifdef ENABLE_DEBUG_PING
+  #define DEBUG_PING(...) Serial.printf(__VA_ARGS__)
+#else
+  #define DEBUG_PING(...)
+#endif
+
+class PingClass {
+  public:
+    PingClass();
+
+    bool ping(IPAddress dest,   unsigned int count = 5);
+    bool ping(const char* host, unsigned int count = 5);
+
+    float averageTime();
+    uint minTime();
+    uint maxTime();
+
+  protected:
+    static void _ping_sent_cb(void *opt, void *pdata);
+    static void _ping_recv_cb(void *opt, void *pdata);
+
+    IPAddress _dest;
+    ping_option _options;
+
+    static byte _expected_count, _errors, _success;
+    static uint _min_time, _max_time;
+    static float _avg_time;
+};
+
+extern PingClass Ping;
+
+#endif
+

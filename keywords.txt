@@ -9,7 +9,7 @@
 ESP_Ping KEYWORD3
 
 #######################################
-# Datatypes (KEYWORD1)
+# Class (KEYWORD1)
 #######################################
 
 Ping	KEYWORD1

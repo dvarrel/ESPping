@@ -16,8 +16,16 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
+#include "ESP_Ping.h"
+
+#ifdef ESP8266
 extern "C" void esp_schedule();
 extern "C" void esp_yield();
+#endif
+#ifdef ESP32
+extern "C" void esp_schedule(void) {};
+extern "C" void esp_yield(void) {};
+#endif
 
 PingClass::PingClass() {}
 
@@ -62,15 +70,15 @@ bool PingClass::ping(const char* host, unsigned int count) {
     return false;
 }
 
-int PingClass::minTime() {
-    return _min_time;
-}
-
-int PingClass::averageTime() {
+float PingClass::averageTime() {
     return _avg_time;
 }
 
-int PingClass::maxTime() {
+uint PingClass::minTime() {
+    return _min_time;
+}
+
+uint PingClass::maxTime() {
     return _max_time;
 }
 
@@ -113,7 +121,7 @@ void PingClass::_ping_recv_cb(void *opt, void *resp) {
     if (_success + _errors == _expected_count) {
         _avg_time = _success > 0 ? _avg_time / _success : 0;
 
-        DEBUG_PING("Resp times min %d, avg %d, max %d ms\n", _min_time, _avg_time, _max_time);
+        DEBUG_PING("Resp times min %d, avg %.2f, max %d ms\n", _min_time, _avg_time, _max_time);
 
         // Done, return to main functiom
         esp_schedule();
@@ -123,7 +131,9 @@ void PingClass::_ping_recv_cb(void *opt, void *resp) {
 byte PingClass::_expected_count = 0;
 byte PingClass::_errors = 0;
 byte PingClass::_success = 0;
-uint PingClass::_min_time = 0;
-uint PingClass::_avg_time = 0;
+float PingClass::_avg_time = 0;
+uint PingClass::_min_time = INT_MAX;
 uint PingClass::_max_time = 0;
+
+PingClass Ping;
 
