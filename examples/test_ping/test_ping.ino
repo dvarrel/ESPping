@@ -33,8 +33,7 @@ void loop()
   const IPAddress remote_ip(9,9,9,9);
   Serial.print(remote_ip);
   if (Ping.ping(remote_ip)){
-      Serial.print(" response time :");
-      Serial.print(Ping.averageTime());
+      Serial.printf(" response time : %d/%.2f/%d", Ping.minTime(), Ping.averageTime(), Ping.maxTime());
       Serial.println("ms");
   } else {
     Serial.println(" Error !");
@@ -45,8 +44,7 @@ void loop()
   const char* remote_host = "quad9.net";
   Serial.print(remote_host);
   if (Ping.ping(remote_host)){
-      Serial.print(" response time :");
-      Serial.print(Ping.averageTime());
+      Serial.printf(" response time : %d/%.2f/%d", Ping.minTime(), Ping.averageTime(), Ping.maxTime());
       Serial.println("ms");
   } else {
     Serial.println(" Ping Error !");
