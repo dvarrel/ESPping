@@ -17,8 +17,8 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#ifndef ESP_Ping_H
-#define ESP_Ping_H
+#ifndef ESPping_H
+#define ESPping_H
 
 #include <Arduino.h>
 #ifdef ESP32

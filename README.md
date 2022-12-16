@@ -1,4 +1,4 @@
-# ESP_Ping
+# ESPping
 Let the ESP32/ESP8266 ping a remote machine.
 
 With this library an ESP32/ESP8266 can ping a remote machine and know if it's reachable.
@@ -11,7 +11,7 @@ thanks to Daniele Colanardi and Marian Craciunescu
 First, include the library in your sketch along with WiFi library:
 
 ```Arduino
-#include <ESP_Ping.h>
+#include <ESPping.h>
 ```
 
 Next, simply call the `Ping.ping()` function

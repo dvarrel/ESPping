@@ -1,12 +1,12 @@
 #######################################
-# Syntax Coloring Map For ESP_Ping
+# Syntax Coloring Map For ESPping
 #######################################
 
 #######################################
 # Library (KEYWORD3)
 #######################################
 
-ESP_Ping KEYWORD3
+ESPping KEYWORD3
 
 #######################################
 # Class (KEYWORD1)

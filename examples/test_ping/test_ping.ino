@@ -2,7 +2,7 @@
   test Ping
 ******************************************************/
 
-#include <ESP_Ping.h>
+#include <ESPping.h>
 
 void setup()
 {
