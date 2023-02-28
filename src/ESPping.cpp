@@ -54,10 +54,17 @@ bool PingClass::ping(IPAddress dest, unsigned int count) {
 
     // Let's go!
     if(ping_start(&_options)) {
+        #ifdef ESP8266
+        //wait until finished
+        while((_success + _errors) < _expected_count){
+            delay(1);
+            esp_yield();
+        };
+        #else
         // Suspend till the process end
         esp_yield();
+        #endif
     }
-
     return (_success > 0);
 }
 
@@ -88,6 +95,7 @@ void PingClass::_ping_recv_cb(void *opt, void *resp) {
     //ping_option* ping_opt  = reinterpret_cast<struct ping_option*>(opt);
 
     // Error or success?
+    #ifdef ESP8266
     if (ping_resp->ping_err == -1)
         _errors++;
     else {
@@ -99,32 +107,46 @@ void PingClass::_ping_recv_cb(void *opt, void *resp) {
           _max_time = ping_resp->resp_time;
         
     }
+    #else
+    _errors = ping_resp->ping_err;
+    _success = _expected_count - _errors;
+    _avg_time = ping_resp->resp_time;
+    _min_time = 0;
+    #endif
 
     // Some debug info
     DEBUG_PING(
-            "DEBUG: ping reply\n"
-            "\ttotal_count = %d \n"
-            "\tresp_time = %d \n"
-            "\tseqno = %d \n"
-            "\ttimeout_count = %d \n"
-            "\tbytes = %d \n"
-            "\ttotal_bytes = %d \n"
-            "\ttotal_time = %d \n"
+            "DEBUG: ping reply"
+            "\ttotal_count = %d"
+            "\tresp_time = %d"
+            "\tseqno = %d"
+            "\ttimeout_count = %d"
+            "\tbytes = %d"
+            "\ttotal_bytes = %d"
+            "\ttotal_time = %d"
             "\tping_err = %d \n",
-            ping_resp->total_count, ping_resp->resp_time, ping_resp->seqno,
-            ping_resp->timeout_count, ping_resp->bytes, ping_resp->total_bytes,
-            ping_resp->total_time, ping_resp->ping_err
+            (int)ping_resp->total_count, (int)ping_resp->resp_time, (int)ping_resp->seqno,
+            (int)ping_resp->timeout_count, (int)ping_resp->bytes, (int)ping_resp->total_bytes,
+            (int)ping_resp->total_time, (int)ping_resp->ping_err
     );
 
     // Is it time to end?
     // Don't using seqno because it does not increase on error
-    if (_success + _errors == _expected_count) {
+    #ifdef ESP8266
+    if (_success + _errors == _expected_count ) {
         _avg_time = _success > 0 ? _avg_time / _success : 0;
+    #else
+    if (ping_resp->total_count== _expected_count) {
 
+    #endif
+    
+        DEBUG_PING("success %d errors %d\n", _success, _errors);
         DEBUG_PING("Resp times min %d, avg %.2f, max %d ms\n", _min_time, _avg_time, _max_time);
 
+        #ifdef ESP32
         // Done, return to main functiom
         esp_schedule();
+        #endif
     }
 }
 

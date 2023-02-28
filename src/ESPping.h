@@ -37,6 +37,7 @@ extern "C" {
 }
 #endif
 
+//#define ENABLE_DEBUG_PING 0
 #ifdef ENABLE_DEBUG_PING
   #define DEBUG_PING(...) Serial.printf(__VA_ARGS__)
 #else
