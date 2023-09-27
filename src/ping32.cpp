@@ -66,7 +66,7 @@
 #include <string.h>
 #include <errno.h>
 
-#include "ping.h"
+#include "ping32.h"
 
 #include "lwip/inet_chksum.h"
 #include "lwip/ip.h"

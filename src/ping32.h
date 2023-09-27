@@ -1,7 +1,7 @@
 #ifdef ESP32
 
-#ifndef PING_H
-#define PING_H
+#ifndef PING32_H
+#define PING32_H
 
 #include <Arduino.h>
 

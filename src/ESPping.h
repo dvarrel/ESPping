@@ -23,7 +23,7 @@
 #include <Arduino.h>
 #ifdef ESP32
 #include <WiFi.h>
-#include <ping.h>
+#include <ping32.h>
 extern "C" {
   void esp_schedule(void);
   void esp_yield(void);
