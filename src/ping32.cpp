@@ -217,7 +217,7 @@ static void ping_recv(int s) {
                 }
 
                 // Print ...
-                log_d("%d bytes from %s: icmp_seq=%d time=%.3f ms\r\n", len, ipa,
+                log_d("%d bytes from %s: icmp_seq=%d time=%.3f ms", len, ipa,
                       ntohs(iecho->seqno), elapsed
                 );
 
@@ -230,7 +230,7 @@ static void ping_recv(int s) {
     }
 
     if (len < 0) {
-        log_d("Request timeout for icmp_seq %d\r\n", ping_seq_num);
+        log_d("Request timeout for icmp_seq %d", ping_seq_num);
     }
 }
 /*
@@ -321,7 +321,7 @@ bool ping_start(IPAddress adr, int count=0, int interval=0, int size=0, int time
     char ipa[16];
 
     strcpy(ipa, inet_ntoa(ping_target));
-    log_i("PING %s: %d data bytes\r\n",  ipa, size);
+    log_i("PING %s: %d data bytes",  ipa, size);
 
     ping_seq_num = 0;
     
@@ -337,7 +337,7 @@ bool ping_start(IPAddress adr, int count=0, int interval=0, int size=0, int time
 
     closesocket(s);
 
-    log_i("%d packets transmitted, %d packets received, %.1f%% packet loss\r\n",
+    log_i("%d packets transmitted, %d packets received, %.1f%% packet loss",
           transmitted,
           received,
           ((((float)transmitted - (float)received) / (float)transmitted) * 100.0)
@@ -346,7 +346,7 @@ bool ping_start(IPAddress adr, int count=0, int interval=0, int size=0, int time
     
     if (ping_o) {
         ping_resp pingresp;
-        log_i("round-trip min/avg/max/stddev = %.3f/%.3f/%.3f/%.3f ms\r\n", min_time, mean_time, max_time, sqrt(var_time / received));
+        log_i("round-trip min/avg/max/stddev = %.3f/%.3f/%.3f/%.3f ms", min_time, mean_time, max_time, sqrt(var_time / received));
         pingresp.total_count = count; //Number of pings
         pingresp.resp_time = mean_time; //Average time for the pings
         pingresp.seqno = 0; //not relevant
