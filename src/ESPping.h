@@ -20,6 +20,7 @@
 #ifndef ESPping_H
 #define ESPping_H
 
+#include <stdint.h>
 #include <Arduino.h>
 #ifdef ESP32
 #include <WiFi.h>
