@@ -4,6 +4,7 @@
 #define PING32_H
 
 #include <Arduino.h>
+#include <stdint.h>
 
 typedef void(*ping_recv_function)(void* arg, void *pdata);
 typedef void(*ping_sent_function)(void* arg, void *pdata);
