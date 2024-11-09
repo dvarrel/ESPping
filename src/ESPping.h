@@ -49,8 +49,8 @@ class PingClass {
   public:
     PingClass();
 
-    bool ping(IPAddress dest,   uint16_t count = 5);
-    bool ping(const char* host, uint16_t count = 5);
+    bool ping(IPAddress dest,   int16_t count = 5);
+    bool ping(const char* host, int16_t count = 5);
 
     float averageTime();
     uint minTime();
