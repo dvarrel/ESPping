@@ -17,6 +17,7 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 #include "ESPping.h"
+#include <stdint.h>
 
 #ifdef ESP8266
 extern "C" void esp_schedule();
@@ -29,7 +30,7 @@ extern "C" void esp_yield(void) {};
 
 PingClass::PingClass() {}
 
-bool PingClass::ping(IPAddress dest, unsigned int count) {
+bool PingClass::ping(IPAddress dest, int16_t count) {
     _expected_count = count;
     _errors = 0;
     _success = 0;
@@ -68,7 +69,7 @@ bool PingClass::ping(IPAddress dest, unsigned int count) {
     return (_success > 0);
 }
 
-bool PingClass::ping(const char* host, unsigned int count) {
+bool PingClass::ping(const char* host, int16_t count) {
     IPAddress remote_addr;
 
     if (WiFi.hostByName(host, remote_addr))
